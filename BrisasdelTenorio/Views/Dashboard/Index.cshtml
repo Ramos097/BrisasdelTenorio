@@ -1,0 +1,76 @@
+﻿@{
+    ViewData["Title"] = "Panel de Control";
+}
+
+<div class="container-fluid mt-4">
+    <h2 class="mb-4">🥬 Panel de Control - Brisas del Tenorio</h2>
+
+    <!-- Tarjetas de KPIs -->
+    <div class="row mb-4">
+        <div class="col-md-4">
+            <div class="card text-white bg-success mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">💰 Ventas (7 días)</h5>
+                    <p class="card-text display-6">₡@ViewBag.VentasSemana?.ToString("N0")</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card text-white bg-warning mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">⏳ Por Cobrar</h5>
+                    <p class="card-text display-6">₡@ViewBag.PorCobrar?.ToString("N0")</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card text-white bg-primary mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">📦 Pedidos</h5>
+                    <p class="card-text display-6">@ViewBag.TotalPedidos</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Gráfica de Ventas -->
+    <div class="card">
+        <div class="card-header">
+            <h5> Ventas de los últimos 7 días</h5>
+        </div>
+        <div class="card-body">
+            <canvas id="ventasChart" height="100"></canvas>
+        </div>
+    </div>
+</div>
+
+<!-- Librería Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    const labels = "@ViewBag.LabelsDias".split(',');
+    const dataVentas = "@ViewBag.DataVentas".split(',').map(Number);
+
+    const ctx = document.getElementById('ventasChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Ventas (₡)',
+                data: dataVentas,
+                borderColor: 'rgba(75, 192, 192, 1)',
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                borderWidth: 2,
+                fill: true,
+                tension: 0.3
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: { beginAtZero: true }
+            }
+        }
+    });
+</script>
