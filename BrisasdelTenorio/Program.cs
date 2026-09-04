@@ -2,6 +2,7 @@ using BrisasdelTenorio.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using BrisasdelTenorio.Models;
+using Microsoft.AspNetCore.Authentication.Cookies; // <-- NUEVO
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +15,14 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddControllersWithViews();
+
+// Configura Autenticación por Cookies 
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+        options.LoginPath = "/Account/Login"; // Si no está logueado, lo manda aquí
+        options.AccessDeniedPath = "/Account/Login";
+    });
 
 // Registrar Entity Framework con SQL Server
 builder.Services.AddDbContext<BrisasDelTenorioContext>(options =>
@@ -36,6 +45,8 @@ else
 app.UseHttpsRedirection();
 app.UseRouting();
 
+// 3. Activar Autenticación y Autorización
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapStaticAssets();
@@ -47,5 +58,6 @@ app.MapControllerRoute(
 
 app.MapRazorPages()
    .WithStaticAssets();
+
 
 app.Run();

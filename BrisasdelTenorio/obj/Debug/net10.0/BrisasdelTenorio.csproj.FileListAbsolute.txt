@@ -296,3 +296,5 @@ C:\Users\Marvin\source\repos\BrisasdelTenorio\BrisasdelTenorio\obj\Debug\net10.0
 C:\Users\Marvin\source\repos\BrisasdelTenorio\BrisasdelTenorio\obj\Debug\net10.0\BrisasdelTenorio.pdb
 C:\Users\Marvin\source\repos\BrisasdelTenorio\BrisasdelTenorio\obj\Debug\net10.0\BrisasdelTenorio.genruntimeconfig.cache
 C:\Users\Marvin\source\repos\BrisasdelTenorio\BrisasdelTenorio\obj\Debug\net10.0\ref\BrisasdelTenorio.dll
+C:\Users\Marvin\source\repos\BrisasdelTenorio\BrisasdelTenorio\bin\Debug\net10.0\BCrypt-Net-Next.dll
+C:\Users\Marvin\source\repos\BrisasdelTenorio\BrisasdelTenorio\obj\Debug\net10.0\BrisasdelTenorio.sourcelink.json

@@ -16,7 +16,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("BrisasdelTenorio")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+932b2ba0bf0a795ab7299f4361d48fcd698ed8f8")]
 [assembly: System.Reflection.AssemblyProductAttribute("BrisasdelTenorio")]
 [assembly: System.Reflection.AssemblyTitleAttribute("BrisasdelTenorio")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

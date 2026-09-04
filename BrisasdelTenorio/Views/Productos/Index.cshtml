@@ -1,0 +1,65 @@
+@model IEnumerable<BrisasdelTenorio.Models.Producto>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Nombre)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Descripcion)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PesoGramos)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Precio)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Activo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DetallePedidos)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(model => item.Nombre)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.Descripcion)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.PesoGramos)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.Precio)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.Activo)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.DetallePedidos)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.ProductoId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.ProductoId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.ProductoId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

@@ -1,11 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "YG6hKr4Pmkc=",
+  "dgSpecHash": "8bcDLnNcljg=",
   "success": true,
   "projectFilePath": "C:\\Users\\Marvin\\source\\repos\\BrisasdelTenorio\\BrisasdelTenorio\\BrisasdelTenorio.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Marvin\\.nuget\\packages\\azure.core\\1.50.0\\azure.core.1.50.0.nupkg.sha512",
     "C:\\Users\\Marvin\\.nuget\\packages\\azure.identity\\1.17.1\\azure.identity.1.17.1.nupkg.sha512",
+    "C:\\Users\\Marvin\\.nuget\\packages\\bcrypt.net-next\\4.2.0\\bcrypt.net-next.4.2.0.nupkg.sha512",
     "C:\\Users\\Marvin\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
     "C:\\Users\\Marvin\\.nuget\\packages\\microsoft.aspnetcore.diagnostics.entityframeworkcore\\10.0.11\\microsoft.aspnetcore.diagnostics.entityframeworkcore.10.0.11.nupkg.sha512",
     "C:\\Users\\Marvin\\.nuget\\packages\\microsoft.aspnetcore.identity.entityframeworkcore\\10.0.11\\microsoft.aspnetcore.identity.entityframeworkcore.10.0.11.nupkg.sha512",

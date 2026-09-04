@@ -1,0 +1,94 @@
+@model IEnumerable<BrisasdelTenorio.Models.Cliente>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+@if (TempData["NuevoToken"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <h5>✅ Cliente creado exitosamente</h5>
+        <p><strong>@TempData["NombreCliente"]</strong> ha sido agregado.</p>
+        <p><strong>Token de pedido:</strong> <code>@TempData["NuevoToken"]</code></p>
+        <p class="mb-0">
+            <strong>Link para el cliente:</strong><br>
+            <a href="@Url.Action("Cliente", "Pedidos", new { token = TempData["NuevoToken"] }, Context.Request.Scheme)"
+               class="btn btn-sm btn-primary mt-2" target="_blank">
+                📋 Copiar link de pedido
+            </a>
+        </p>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Nombre)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Telefono)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Direccion)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TokenPedido)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Activo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FechaCreacion)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Pedidos)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(model => item.Nombre)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.Telefono)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.Direccion)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.TokenPedido)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.Activo)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.FechaCreacion)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.Pedidos)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.ClienteId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.ClienteId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.ClienteId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

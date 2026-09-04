@@ -1,11 +1,14 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using BrisasdelTenorio.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BrisasdelTenorio.Controllers
 {
+    [Authorize]
     public class DashboardController : Controller
     {
+       
         private readonly BrisasDelTenorioContext _context;
 
         public DashboardController(BrisasDelTenorioContext context)
