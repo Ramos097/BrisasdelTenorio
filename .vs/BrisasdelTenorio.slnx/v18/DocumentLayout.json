@@ -3,16 +3,12 @@
   "WorkspaceRootPath": "C:\\Users\\Marvin\\source\\repos\\BrisasdelTenorio\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{B3CB17AB-FB04-3D06-5328-BD0B2A20C85F}|BrisasdelTenorio\\BrisasdelTenorio.csproj|c:\\users\\marvin\\source\\repos\\brisasdeltenorio\\brisasdeltenorio\\controllers\\clientescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{B3CB17AB-FB04-3D06-5328-BD0B2A20C85F}|BrisasdelTenorio\\BrisasdelTenorio.csproj|solutionrelative:brisasdeltenorio\\controllers\\clientescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{B3CB17AB-FB04-3D06-5328-BD0B2A20C85F}|BrisasdelTenorio\\BrisasdelTenorio.csproj|c:\\users\\marvin\\source\\repos\\brisasdeltenorio\\brisasdeltenorio\\views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{B3CB17AB-FB04-3D06-5328-BD0B2A20C85F}|BrisasdelTenorio\\BrisasdelTenorio.csproj|solutionrelative:brisasdeltenorio\\views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{B3CB17AB-FB04-3D06-5328-BD0B2A20C85F}|BrisasdelTenorio\\BrisasdelTenorio.csproj|c:\\users\\marvin\\source\\repos\\brisasdeltenorio\\brisasdeltenorio\\views\\clientes\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{B3CB17AB-FB04-3D06-5328-BD0B2A20C85F}|BrisasdelTenorio\\BrisasdelTenorio.csproj|solutionrelative:brisasdeltenorio\\views\\clientes\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{B3CB17AB-FB04-3D06-5328-BD0B2A20C85F}|BrisasdelTenorio\\BrisasdelTenorio.csproj|c:\\users\\marvin\\source\\repos\\brisasdeltenorio\\brisasdeltenorio\\views\\clientes\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{B3CB17AB-FB04-3D06-5328-BD0B2A20C85F}|BrisasdelTenorio\\BrisasdelTenorio.csproj|solutionrelative:brisasdeltenorio\\views\\clientes\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{B3CB17AB-FB04-3D06-5328-BD0B2A20C85F}|BrisasdelTenorio\\BrisasdelTenorio.csproj|c:\\users\\marvin\\source\\repos\\brisasdeltenorio\\brisasdeltenorio\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{B3CB17AB-FB04-3D06-5328-BD0B2A20C85F}|BrisasdelTenorio\\BrisasdelTenorio.csproj|solutionrelative:brisasdeltenorio\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     }
   ],
   "DocumentGroupContainers": [
@@ -22,46 +18,32 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 2,
+          "SelectedChildIndex": 0,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 0,
               "Title": "Index.cshtml",
-              "DocumentMoniker": "C:\\Users\\Marvin\\source\\repos\\BrisasdelTenorio\\BrisasdelTenorio\\Views\\Clientes\\Index.cshtml",
-              "RelativeDocumentMoniker": "BrisasdelTenorio\\Views\\Clientes\\Index.cshtml",
-              "ToolTip": "C:\\Users\\Marvin\\source\\repos\\BrisasdelTenorio\\BrisasdelTenorio\\Views\\Clientes\\Index.cshtml",
-              "RelativeToolTip": "BrisasdelTenorio\\Views\\Clientes\\Index.cshtml",
-              "ViewState": "AgIAAAMAAAAAAAAAAAAAABYAAAAAAAAAAAAAAA==",
+              "DocumentMoniker": "C:\\Users\\Marvin\\source\\repos\\BrisasdelTenorio\\BrisasdelTenorio\\Views\\Home\\Index.cshtml",
+              "RelativeDocumentMoniker": "BrisasdelTenorio\\Views\\Home\\Index.cshtml",
+              "ToolTip": "C:\\Users\\Marvin\\source\\repos\\BrisasdelTenorio\\BrisasdelTenorio\\Views\\Home\\Index.cshtml",
+              "RelativeToolTip": "BrisasdelTenorio\\Views\\Home\\Index.cshtml",
+              "ViewState": "AgIAACEAAAAAAAAAAAAAACwAAACMAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-09-04T01:08:58.791Z",
+              "WhenOpened": "2026-09-20T05:38:08.792Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "Create.cshtml",
-              "DocumentMoniker": "C:\\Users\\Marvin\\source\\repos\\BrisasdelTenorio\\BrisasdelTenorio\\Views\\Clientes\\Create.cshtml",
-              "RelativeDocumentMoniker": "BrisasdelTenorio\\Views\\Clientes\\Create.cshtml",
-              "ToolTip": "C:\\Users\\Marvin\\source\\repos\\BrisasdelTenorio\\BrisasdelTenorio\\Views\\Clientes\\Create.cshtml",
-              "RelativeToolTip": "BrisasdelTenorio\\Views\\Clientes\\Create.cshtml",
-              "ViewState": "AgIAAEEAAAAAAAAAAAAiwE4AAAAAAAAAAAAAAA==",
+              "Title": "_Layout.cshtml",
+              "DocumentMoniker": "C:\\Users\\Marvin\\source\\repos\\BrisasdelTenorio\\BrisasdelTenorio\\Views\\Shared\\_Layout.cshtml",
+              "RelativeDocumentMoniker": "BrisasdelTenorio\\Views\\Shared\\_Layout.cshtml",
+              "ToolTip": "C:\\Users\\Marvin\\source\\repos\\BrisasdelTenorio\\BrisasdelTenorio\\Views\\Shared\\_Layout.cshtml",
+              "RelativeToolTip": "BrisasdelTenorio\\Views\\Shared\\_Layout.cshtml",
+              "ViewState": "AgIAABAAAAAAAAAAAAAYwEgAAAAGAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-09-04T01:06:23.737Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "ClientesController.cs",
-              "DocumentMoniker": "C:\\Users\\Marvin\\source\\repos\\BrisasdelTenorio\\BrisasdelTenorio\\Controllers\\ClientesController.cs",
-              "RelativeDocumentMoniker": "BrisasdelTenorio\\Controllers\\ClientesController.cs",
-              "ToolTip": "C:\\Users\\Marvin\\source\\repos\\BrisasdelTenorio\\BrisasdelTenorio\\Controllers\\ClientesController.cs",
-              "RelativeToolTip": "BrisasdelTenorio\\Controllers\\ClientesController.cs",
-              "ViewState": "AgIAACcAAAAAAAAAAAAUwFwAAAAFAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-09-04T01:05:08.136Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-09-20T05:37:49.434Z"
             }
           ]
         }

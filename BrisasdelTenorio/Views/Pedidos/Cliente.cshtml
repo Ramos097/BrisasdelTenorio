@@ -1,0 +1,114 @@
+﻿@{
+    ViewData["Title"] = "Hacer Pedido";
+    var cliente = ViewBag.Cliente as BrisasdelTenorio.Models.Cliente;
+    var productos = ViewBag.Productos as List<BrisasdelTenorio.Models.Producto>;
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+
+            <!-- Encabezado del Cliente -->
+            <div class="card mb-4 border-primary">
+                <div class="card-body text-center">
+                    <h2 class="text-primary">Hola, @cliente.Nombre</h2>
+                    <p class="lead">Selecciona la cantidad de productos que necesitas para esta semana.</p>
+                </div>
+            </div>
+
+            <!-- Mostrar error si el cliente no seleccionó nada -->
+            @if (TempData["Error"] != null)
+            {
+                <div class="alert alert-danger">@TempData["Error"]</div>
+            }
+
+            <!-- Formulario de Pedido -->
+            <form method="post" asp-action="GuardarPedido" asp-route-token="@cliente.TokenPedido">
+                @Html.AntiForgeryToken() <!-- Necesario por seguridad -->
+
+                <div class="card shadow-sm">
+                    <div class="card-header bg-success text-white">
+                        <h4 class="mb-0">🥬 Nuestros Productos</h4>
+                    </div>
+                    <div class="card-body">
+
+                        @if (productos != null && productos.Any())
+                        {
+                            <table class="table table-hover align-middle">
+                                <thead>
+                                    <tr>
+                                        <th>Producto</th>
+                                        <th>Precio</th>
+                                        <th style="width: 150px;">Cantidad</th>
+                                        <th>Subtotal</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var producto in productos)
+                                    {
+                                        <tr>
+                                            <td>
+                                                <strong>@producto.Nombre</strong><br>
+                                                <small class="text-muted">@producto.Descripcion</small>
+                                            </td>
+                                            <td>₡@producto.Precio.ToString("N0")</td>
+                                            <td>
+                                                <!-- El nombre 'cantidades[ID]' es clave para el controlador -->
+                                                <input type="number"
+                                                       name="cantidades[@producto.ProductoId]"
+                                                       class="form-control cantidad-input text-center"
+                                                       min="0"
+                                                       value="0"
+                                                       data-precio="@producto.Precio" />
+                                            </td>
+                                            <td class="subtotal fw-bold">₡0</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        }
+                        else
+                        {
+                            <div class="text-center py-4">
+                                <p class="text-muted">No hay productos disponibles en este momento.</p>
+                            </div>
+                        }
+
+                        <div class="text-end mt-3 border-top pt-3">
+                            <h3>Total a pagar: <span id="totalGeneral" class="text-success">₡0</span></h3>
+                        </div>
+                    </div>
+                    <div class="card-footer text-center bg-white">
+                        <button type="submit" class="btn btn-primary btn-lg px-5">
+                            Confirmar Pedido 🛒
+                        </button>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+<!-- Script para calcular el total en tiempo real -->
+<script>
+    document.querySelectorAll('.cantidad-input').forEach(input => {
+        input.addEventListener('input', function() {
+            let precio = parseFloat(this.getAttribute('data-precio'));
+            let cantidad = parseInt(this.value) || 0;
+            let subtotal = precio * cantidad;
+
+            // Actualizar subtotal de la fila
+            this.closest('tr').querySelector('.subtotal').innerText = '₡' + subtotal.toLocaleString();
+
+            // Actualizar total general
+            let total = 0;
+            document.querySelectorAll('.cantidad-input').forEach(i => {
+                let p = parseFloat(i.getAttribute('data-precio'));
+                let c = parseInt(i.value) || 0;
+                total += p * c;
+            });
+            document.getElementById('totalGeneral').innerText = '₡' + total.toLocaleString();
+        });
+    });
+</script>

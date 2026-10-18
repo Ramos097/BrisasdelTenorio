@@ -1,0 +1,60 @@
+﻿@{
+    ViewData["Title"] = "Pedido Confirmado";
+    var cliente = ViewBag.Cliente as BrisasdelTenorio.Models.Cliente;
+    var pedido = ViewBag.Pedido as BrisasdelTenorio.Models.Pedido;
+    var detalles = pedido?.DetallePedidos;
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card border-success shadow">
+                <div class="card-body text-center">
+                    <div class="mb-4">
+                        <h1 class="text-success">✅ ¡Pedido Confirmado!</h1>
+                        <p class="lead">Gracias por tu compra, <strong>@cliente.Nombre</strong></p>
+                    </div>
+
+                    <div class="alert alert-info">
+                        <h5>Detalles del Pedido #@pedido.PedidoId</h5>
+                        <p><strong>Fecha de entrega estimada:</strong> @pedido.FechaEntrega.ToString("dd/MM/yyyy")</p>
+                        <p><strong>Total del pedido:</strong> <span class="text-success fs-4">₡@pedido.Total.ToString("N0")</span></p>
+                    </div>
+
+                    @if (detalles != null && detalles.Any())
+                    {
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Producto</th>
+                                    <th>Cantidad</th>
+                                    <th>Precio</th>
+                                    <th>Subtotal</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var detalle in detalles)
+                                {
+                                    <tr>
+                                        <td>@detalle.Producto.Nombre</td>
+                                        <td>@detalle.Cantidad</td>
+                                        <td>₡@detalle.PrecioUnitario.ToString("N0")</td>
+                                        <td>₡@detalle.Subtotal.ToString("N0")</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    }
+
+                    <div class="mt-4">
+                        <p class="text-muted">Nos pondremos en contacto contigo para confirmar la entrega.</p>
+                        <a href="@Url.Action("Cliente", "Pedidos", new { token = cliente.TokenPedido })"
+                           class="btn btn-outline-primary">
+                            🛒 Hacer otro pedido
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

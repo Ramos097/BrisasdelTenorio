@@ -1,185 +1,244 @@
-
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using BrisasdelTenorio.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 
-
-[Authorize]
-public class ClientesController : Controller
+namespace BrisasdelTenorio.Controllers 
 {
-    private readonly BrisasDelTenorioContext _context;
-
-    public ClientesController(BrisasDelTenorioContext context)
+    [Authorize]
+    public class ClientesController : Controller
     {
-        _context = context;
-    }
+        private readonly BrisasDelTenorioContext _context;
 
-    // GET: CLIENTES
-    public async Task<IActionResult> Index()    
-    {
-        return View(await _context.Clientes.ToListAsync());
-    }
-
-    // GET: CLIENTES/Details/5
-    public async Task<IActionResult> Details(int? clienteid)
-    {
-        if (clienteid == null)
+        public ClientesController(BrisasDelTenorioContext context)
         {
-            return NotFound();
+            _context = context;
         }
 
-        var cliente = await _context.Clientes
-            .FirstOrDefaultAsync(m => m.ClienteId == clienteid);
-        if (cliente == null)
+        // GET: CLIENTES
+        public async Task<IActionResult> Index()
         {
-            return NotFound();
+            var clientesActivos = await _context.Clientes
+                .Where(c => c.Activo == true)
+                .ToListAsync();
+
+            return View(clientesActivos);
         }
 
-        return View(cliente);
-    }
-
-    // GET: CLIENTES/Create
-    public IActionResult Create()
-    {
-        return View();
-    }
-
-    // POST: CLIENTES/Create
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create([Bind("Nombre,Telefono,Email,Direccion,Activo")] Cliente cliente)
-    {
-        // Generar token único INMEDIATAMENTE (antes de validar)
-        cliente.TokenPedido = GenerarTokenUnico();
-        cliente.FechaCreacion = DateTime.Now;
-        cliente.Activo = true;
-
-        // Eliminar errores de validación de campos que generamos por código
-        ModelState.Remove("TokenPedido");
-        ModelState.Remove("FechaCreacion");
-
-        if (ModelState.IsValid)
+        // GET: CLIENTES/Details/5
+        public async Task<IActionResult> Details(int id)
         {
-            _context.Add(cliente);
-            await _context.SaveChangesAsync();
-
-            // Guardar el token en TempData para mostrarlo
-            TempData["NuevoToken"] = cliente.TokenPedido;
-            TempData["NombreCliente"] = cliente.Nombre;
-
-            return RedirectToAction(nameof(Index));
-        }
-
-        // Si hay error, mostrar qué está fallando
-        ViewBag.Errores = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToList();
-
-        return View(cliente);
-    }
-
-    // Método auxiliar para generar tokens únicos
-    private string GenerarTokenUnico(int longitud = 20)
-    {
-        const string caracteres = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"; // Sin 0, O, 1, I para evitar confusión
-        var random = new Random();
-        var token = new char[longitud];
-
-        for (int i = 0; i < longitud; i++)
-        {
-            token[i] = caracteres[random.Next(caracteres.Length)];
-        }
-
-        return new string(token);
-    }
-
-
-
-    // GET: CLIENTES/Edit/5
-    public async Task<IActionResult> Edit(int? clienteid)
-    {
-        if (clienteid == null)
-        {
-            return NotFound();
-        }
-
-        var cliente = await _context.Clientes.FindAsync(clienteid);
-        if (cliente == null)
-        {
-            return NotFound();
-        }
-        return View(cliente);
-    }
-
-    // POST: CLIENTES/Edit/5
-    // To protect from overposting attacks, enable the specific properties you want to bind to.
-    // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(int? clienteid, [Bind("ClienteId,Nombre,Telefono,Email,Direccion,TokenPedido,Activo,FechaCreacion,Pedidos")] Cliente cliente)
-    {
-        if (clienteid != cliente.ClienteId)
-        {
-            return NotFound();
-        }
-
-        if (ModelState.IsValid)
-        {
-            try
+            if (id == 0)
             {
-                _context.Update(cliente);
+                return NotFound();
+            }
+
+            var cliente = await _context.Clientes
+                .FirstOrDefaultAsync(m => m.ClienteId == id);
+
+            if (cliente == null)
+            {
+                return NotFound();
+            }
+
+            // Traemos solo la lista de precios especiales ya cargada
+            ViewBag.PreciosEspeciales = await _context.PreciosEspeciales
+                .Include(pe => pe.Producto)
+                .Where(pe => pe.ClienteId == cliente.ClienteId)
+                .ToListAsync();
+
+            return View(cliente);
+        }
+
+        // GET: CLIENTES/Create
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        // POST: CLIENTES/Create
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create([Bind("Nombre,Telefono,Email,Direccion,Activo")] Cliente cliente)
+        {
+            cliente.TokenPedido = GenerarTokenUnico();
+            cliente.FechaCreacion = DateTime.Now;
+            cliente.Activo = true;
+
+            ModelState.Remove("TokenPedido");
+            ModelState.Remove("FechaCreacion");
+
+            if (ModelState.IsValid)
+            {
+                _context.Add(cliente);
                 await _context.SaveChangesAsync();
+
+                TempData["NuevoToken"] = cliente.TokenPedido;
+                TempData["NombreCliente"] = cliente.Nombre;
+
+                return RedirectToAction(nameof(Index));
             }
-            catch (DbUpdateConcurrencyException)
+
+            ViewBag.Errores = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToList();
+            return View(cliente);
+        }
+
+        // Método auxiliar para generar tokens únicos
+        private string GenerarTokenUnico(int longitud = 20)
+        {
+            const string caracteres = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+            var random = new Random();
+            var token = new char[longitud];
+
+            for (int i = 0; i < longitud; i++)
             {
-                if (!ClienteExists(cliente.ClienteId))
+                token[i] = caracteres[random.Next(caracteres.Length)];
+            }
+
+            return new string(token);
+        }
+
+        // GET: CLIENTES/Edit/5
+        public async Task<IActionResult> Edit(int id)
+        {
+            if (id == 0)
+            {
+                return NotFound();
+            }
+
+            var cliente = await _context.Clientes.FindAsync(id);
+            if (cliente == null)
+            {
+                return NotFound();
+            }
+            return View(cliente);
+        }
+
+        // POST: CLIENTES/Edit/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, [Bind("ClienteId,Nombre,Telefono,Email,Direccion,Activo")] Cliente cliente)
+        {
+            if (id != cliente.ClienteId)
+            {
+                return NotFound();
+            }
+
+            var clienteOriginal = await _context.Clientes.FindAsync(id);
+            if (clienteOriginal == null)
+            {
+                return NotFound();
+            }
+
+            clienteOriginal.Nombre = cliente.Nombre;
+            clienteOriginal.Telefono = cliente.Telefono;
+            clienteOriginal.Email = cliente.Email;
+            clienteOriginal.Direccion = cliente.Direccion;
+            clienteOriginal.Activo = cliente.Activo;
+
+            ModelState.Remove("TokenPedido");
+            ModelState.Remove("FechaCreacion");
+
+            if (ModelState.IsValid)
+            {
+                try
                 {
-                    return NotFound();
+                    await _context.SaveChangesAsync();
+                    TempData["MensajeExito"] = "Cliente actualizado correctamente.";
                 }
-                else
+                catch (DbUpdateException ex)
                 {
-                    throw;
+                    ViewBag.Errores = new List<string> { ex.InnerException?.Message ?? ex.Message };
+                    return View(cliente);
                 }
+                return RedirectToAction(nameof(Index));
+            }
+
+            ViewBag.Errores = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToList();
+            return View(cliente);
+        }
+
+        // GET: CLIENTES/Delete/5
+        public async Task<IActionResult> Delete(int id)
+        {
+            if (id == 0)
+            {
+                return NotFound();
+            }
+
+            var cliente = await _context.Clientes
+                .FirstOrDefaultAsync(m => m.ClienteId == id);
+
+            if (cliente == null)
+            {
+                return NotFound();
+            }
+
+            return View(cliente);
+        }
+
+        // POST: CLIENTES/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            var cliente = await _context.Clientes.FindAsync(id);
+            if (cliente != null)
+            {
+                cliente.Activo = false;
+                cliente.Nombre = $"[Inactivo] {cliente.Nombre}";
+                await _context.SaveChangesAsync();
+
+                TempData["MensajeExito"] = "Cliente desactivado correctamente (se conserva el historial de pedidos).";
             }
             return RedirectToAction(nameof(Index));
         }
-        return View(cliente);
-    }
 
-    // GET: CLIENTES/Delete/5
-    public async Task<IActionResult> Delete(int? clienteid)
-    {
-        if (clienteid == null)
+        // GET: Clientes/AgregarPrecioEspecial/5
+        public async Task<IActionResult> AgregarPrecioEspecial(int id)
         {
-            return NotFound();
+            var cliente = await _context.Clientes.FindAsync(id);
+            if (cliente == null) return NotFound();
+
+            ViewBag.Cliente = cliente;
+            ViewBag.Productos = new SelectList(await _context.Productos.Where(p => p.Activo).ToListAsync(), "ProductoId", "Nombre");
+
+            return View();
         }
 
-        var cliente = await _context.Clientes
-            .FirstOrDefaultAsync(m => m.ClienteId == clienteid);
-        if (cliente == null)
+        // POST: Clientes/AgregarPrecioEspecial
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AgregarPrecioEspecial(int clienteId, int productoId, decimal precio)
         {
-            return NotFound();
+            var precioExistente = await _context.PreciosEspeciales
+                .FirstOrDefaultAsync(pe => pe.ClienteId == clienteId && pe.ProductoId == productoId);
+
+            if (precioExistente != null)
+            {
+                precioExistente.Precio = precio;
+            }
+            else
+            {
+                var nuevoPrecio = new PrecioEspecial
+                {
+                    ClienteId = clienteId,
+                    ProductoId = productoId,
+                    Precio = precio
+                };
+                _context.PreciosEspeciales.Add(nuevoPrecio);
+            }
+
+            await _context.SaveChangesAsync();
+            TempData["MensajeExito"] = "Precio especial guardado correctamente.";
+
+            return RedirectToAction("Details", new { id = clienteId });
         }
 
-        return View(cliente);
-    }
-
-    // POST: CLIENTES/Delete/5
-    [HttpPost, ActionName("Delete")]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> DeleteConfirmed(int? clienteid)
-    {
-        var cliente = await _context.Clientes.FindAsync(clienteid);
-        if (cliente != null)
+        private bool ClienteExists(int id)
         {
-            _context.Clientes.Remove(cliente);
+            return _context.Clientes.Any(e => e.ClienteId == id);
         }
-
-        await _context.SaveChangesAsync();
-        return RedirectToAction(nameof(Index));
-    }
-
-    private bool ClienteExists(int? clienteid)
-    {
-        return _context.Clientes.Any(e => e.ClienteId == clienteid);
     }
 }

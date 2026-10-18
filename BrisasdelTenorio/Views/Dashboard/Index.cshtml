@@ -1,30 +1,48 @@
 ﻿@{
     ViewData["Title"] = "Panel de Control";
+    var ultimosPedidos = ViewBag.UltimosPedidos as List<BrisasdelTenorio.Models.Pedido>;
 }
 
 <div class="container-fluid mt-4">
     <h2 class="mb-4">🥬 Panel de Control - Brisas del Tenorio</h2>
+    <p class="text-muted mb-4">
+        <small id="ultimo-refresco">Última actualización: ahora</small>
+        <button onclick="actualizarKPIs()" class="btn btn-sm btn-outline-primary ms-2" title="Actualizar ahora">
+            🔄 Actualizar
+        </button>
+    </p>
+
+    @if (ViewBag.Error != null)
+    {
+        <div class="alert alert-danger">@ViewBag.Error</div>
+    }
 
     <!-- Tarjetas de KPIs -->
     <div class="row mb-4">
         <div class="col-md-4">
-            <div class="card text-white bg-success mb-3">
+            <div class="card text-white bg-success mb-3 shadow">
                 <div class="card-body">
                     <h5 class="card-title">💰 Ventas (7 días)</h5>
                     <p class="card-text display-6">₡@ViewBag.VentasSemana?.ToString("N0")</p>
+                    @if (ViewBag.PorcentajeCambio != null)
+                    {
+                        <small class="@(ViewBag.Mejoro ? "text-light" : "text-danger")">
+                            @(ViewBag.Mejoro ? "↑" : "↓") @ViewBag.PorcentajeCambio% vs semana anterior
+                        </small>
+                    }
                 </div>
             </div>
         </div>
         <div class="col-md-4">
-            <div class="card text-white bg-warning mb-3">
+            <div class="card text-white bg-warning mb-3 shadow">
                 <div class="card-body">
                     <h5 class="card-title">⏳ Por Cobrar</h5>
-                    <p class="card-text display-6">₡@ViewBag.PorCobrar?.ToString("N0")</p>
+                    <p class="card-text display-6">@ViewBag.PorCobrar?.ToString("N0")</p>
                 </div>
             </div>
         </div>
         <div class="col-md-4">
-            <div class="card text-white bg-primary mb-3">
+            <div class="card text-white bg-primary mb-3 shadow">
                 <div class="card-body">
                     <h5 class="card-title">📦 Pedidos</h5>
                     <p class="card-text display-6">@ViewBag.TotalPedidos</p>
@@ -34,43 +52,254 @@
     </div>
 
     <!-- Gráfica de Ventas -->
-    <div class="card">
+    <div class="card mb-4 shadow-sm">
         <div class="card-header">
-            <h5> Ventas de los últimos 7 días</h5>
+            <h5 class="mb-0">📈 Ventas de los últimos 7 días</h5>
         </div>
         <div class="card-body">
             <canvas id="ventasChart" height="100"></canvas>
         </div>
     </div>
+
+    <!-- Tabla de Últimos Pedidos CON BOTONES -->
+    <div class="card shadow-sm">
+        <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">📋 Últimos Pedidos</h5>
+            <a asp-controller="Clientes" asp-action="Create" class="btn btn-sm btn-light">+ Nuevo Cliente</a>
+        </div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th>#</th>
+                            <th>Cliente</th>
+                            <th>Fecha</th>
+                            <th>Total</th>
+                            <th>Estado</th>
+                            <th>Pago</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (ultimosPedidos != null && ultimosPedidos.Any())
+                        {
+                            @foreach (var pedido in ultimosPedidos)
+                            {
+                                <tr class="@(pedido.Cliente.Activo == false ? "table-warning" : "")">
+                                    <td><strong>@pedido.PedidoId</strong></td>
+                                    <td>
+                                        @pedido.Cliente.Nombre
+                                        @if (pedido.Cliente.Activo == false)
+                                        {
+                                            <span class="badge bg-warning text-dark ms-1">Inactivo</span>
+                                        }
+                                    </td>
+                                    <td>@pedido.FechaPedido.ToString("dd/MM HH:mm")</td>
+                                    <td><strong>₡@pedido.Total.ToString("N0")</strong></td>
+                                    <td>
+                                        <!-- BOTÓN DE ESTADO -->
+                                        <select class="form-select form-select-sm estado-select" 
+                                                data-pedido="@pedido.PedidoId" 
+                                                data-campo="Estado"
+                                                value="@pedido.Estado">
+                                            <option value="Pendiente" selected="@(pedido.Estado == "Pendiente")">Pendiente</option>
+                                            <option value="Preparado" selected="@(pedido.Estado == "Preparado")">Preparado</option>
+                                            <option value="EnRuta" selected="@(pedido.Estado == "EnRuta")">🚚 En Ruta</option>
+                                            <option value="Entregado" selected="@(pedido.Estado == "Entregado")">✅ Entregado</option>
+                                            <option value="Cancelado" selected="@(pedido.Estado == "Cancelado")">❌ Cancelado</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <!-- BOTÓN DE PAGO -->
+                                        <select class="form-select form-select-sm pago-select" 
+                                                data-pedido="@pedido.PedidoId" 
+                                                data-campo="EstadoPago"
+                                                value="@pedido.EstadoPago">
+                                            <option value="Pendiente" selected="@(pedido.EstadoPago == "Pendiente")">Pendiente</option>
+                                            <option value="Parcial" selected="@(pedido.EstadoPago == "Parcial")">Parcial</option>
+                                            <option value="Pagado" selected="@(pedido.EstadoPago == "Pagado")"> Pagado</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <a asp-controller="Pedidos" asp-action="Cliente" 
+                                           asp-route-token="@pedido.Cliente.TokenPedido"
+                                           target="_blank"
+                                           class="btn btn-sm btn-outline-info" 
+                                           title="Ver pedido del cliente">🔗</a>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="7" class="text-center text-muted py-4">
+                                    No hay pedidos registrados aún
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 </div>
 
-<!-- Librería Chart.js -->
+<!-- Chart.js -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-<script>
-    const labels = "@ViewBag.LabelsDias".split(',');
-    const dataVentas = "@ViewBag.DataVentas".split(',').map(Number);
+@section Scripts {
+    <script>
+        // ✅ GRÁFICA DE VENTAS
+        const labels = "@ViewBag.LabelsDias".split(',');
+        const dataVentas = "@ViewBag.DataVentas".split(',').map(Number);
 
-    const ctx = document.getElementById('ventasChart').getContext('2d');
-    new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: labels,
-            datasets: [{
-                label: 'Ventas (₡)',
-                data: dataVentas,
-                borderColor: 'rgba(75, 192, 192, 1)',
-                backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                borderWidth: 2,
-                fill: true,
-                tension: 0.3
-            }]
-        },
-        options: {
-            responsive: true,
-            scales: {
-                y: { beginAtZero: true }
+        const ctx = document.getElementById('ventasChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Ventas (₡)',
+                    data: dataVentas,
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    borderWidth: 2,
+                    fill: true,
+                    tension: 0.3
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: { beginAtZero: true }
+                }
+            }
+        });
+
+        // ✅ ACTUALIZACIÓN RÁPIDA DE ESTADO (AJAX)
+        document.querySelectorAll('.estado-select, .pago-select').forEach(select => {
+            select.addEventListener('change', async function() {
+                const pedidoId = this.getAttribute('data-pedido');
+                const campo = this.getAttribute('data-campo');
+                const valor = this.value;
+                const token = document.querySelector('input[name="__RequestVerificationToken"]')?.value;
+
+                // Mostrar indicador de carga
+                this.disabled = true;
+                this.classList.add('opacity-50');
+
+                try {
+                    const response = await fetch('/Dashboard/ActualizarEstado', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                            'RequestVerificationToken': token
+                        },
+                        body: `pedidoId=${pedidoId}&campo=${campo}&valor=${valor}`
+                    });
+
+                    const result = await response.json();
+
+                    if (response.ok && result.success) {
+                        // Feedback visual
+                        this.classList.add('border-success', 'bg-success-subtle');
+                        setTimeout(() => {
+                            this.classList.remove('border-success', 'bg-success-subtle');
+                        }, 1000);
+
+                        // ✅ ACTUALIZAR LAS TARJETAS AUTOMÁTICAMENTE
+                        await actualizarKPIs();
+                    } else {
+                        alert('Error: ' + (result.message || 'No se pudo actualizar'));
+                        // Revertir al valor anterior
+                        this.value = result.valorAnterior || this.value;
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    alert('Error de conexión');
+                } finally {
+                    this.disabled = false;
+                    this.classList.remove('opacity-50');
+                }
+            });
+        });
+
+        // ✅ FUNCIÓN PARA ACTUALIZAR LAS TARJETAS DE KPIs
+        async function actualizarKPIs() {
+            try {
+                const response = await fetch('/Dashboard/GetEstadisticas');
+                if (response.ok) {
+                    const stats = await response.json();
+
+                    // Actualizar tarjeta de Ventas
+                    const ventasCard = document.querySelector('.bg-success .card-text');
+                    if (ventasCard) {
+                        ventasCard.innerHTML = `₡${stats.ventasSemana.toLocaleString()}`;
+                    }
+
+                    // Actualizar tarjeta de Por Cobrar
+                    const porCobrarCard = document.querySelector('.bg-warning .card-text');
+                    if (porCobrarCard) {
+                        porCobrarCard.innerHTML = `₡${stats.porCobrar.toLocaleString()}`;
+                    }
+
+                    // Actualizar tarjeta de Pedidos
+                    const pedidosCard = document.querySelector('.bg-primary .card-text');
+                    if (pedidosCard) {
+                        pedidosCard.innerHTML = stats.pedidosHoy;
+                    }
+
+                    // Mostrar notificación sutil
+                    mostrarNotificacion('Datos actualizados');
+                }
+            } catch (error) {
+                console.error('Error al actualizar KPIs:', error);
             }
         }
-    });
-</script>
+
+        // ✅ AUTO-REFRESH CADA 30 SEGUNDOS
+        let segundosDesdeUltimaActualizacion = 0;
+        setInterval(async () => {
+            segundosDesdeUltimaActualizacion += 1;
+
+            // Actualizar contador si existe
+            const contadorEl = document.getElementById('ultimo-refresco');
+            if (contadorEl) {
+                contadorEl.textContent = `Última actualización: hace ${segundosDesdeUltimaActualizacion} segundos`;
+            }
+
+            // Refrescar cada 30 segundos
+            if (segundosDesdeUltimaActualizacion % 30 === 0) {
+                await actualizarKPIs();
+                segundosDesdeUltimaActualizacion = 0;
+            }
+        }, 1000);
+
+        // ✅ MOSTRAR NOTIFICACIÓN SUTIL
+        function mostrarNotificacion(mensaje) {
+            // Crear o reutilizar notificación
+            let notificacion = document.getElementById('toast-notificacion');
+            if (!notificacion) {
+                notificacion = document.createElement('div');
+                notificacion.id = 'toast-notificacion';
+                notificacion.className = 'position-fixed bottom-0 end-0 p-3';
+                notificacion.style.zIndex = '9999';
+                document.body.appendChild(notificacion);
+            }
+
+            notificacion.innerHTML = `
+                    <div class="toast show bg-success text-white" role="alert">
+                        <div class="toast-body">
+                            ${mensaje}
+                        </div>
+                    </div>
+                `;
+
+            setTimeout(() => {
+                notificacion.remove();
+            }, 2000);
+        }
+    </script>
+}

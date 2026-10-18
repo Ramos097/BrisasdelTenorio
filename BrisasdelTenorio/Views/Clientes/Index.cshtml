@@ -1,12 +1,22 @@
 @model IEnumerable<BrisasdelTenorio.Models.Cliente>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Clientes";
+}
+
+<h2 class="mb-4">👥 Gestión de Clientes</h2>
+
+@if (TempData["MensajeExito"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show">
+        @TempData["MensajeExito"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
 }
 
 @if (TempData["NuevoToken"] != null)
 {
-    <div class="alert alert-success alert-dismissible fade show" role="alert">
+    <div class="alert alert-success alert-dismissible fade show">
         <h5>✅ Cliente creado exitosamente</h5>
         <p><strong>@TempData["NombreCliente"]</strong> ha sido agregado.</p>
         <p><strong>Token de pedido:</strong> <code>@TempData["NuevoToken"]</code></p>
@@ -14,81 +24,141 @@
             <strong>Link para el cliente:</strong><br>
             <a href="@Url.Action("Cliente", "Pedidos", new { token = TempData["NuevoToken"] }, Context.Request.Scheme)"
                class="btn btn-sm btn-primary mt-2" target="_blank">
-                📋 Copiar link de pedido
+                Abrir link de pedido
             </a>
         </p>
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
 }
 
-<h1>Index</h1>
-
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create" class="btn btn-success mb-3">➕ Crear Nuevo Cliente</a>
 </p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Nombre)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Telefono)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Email)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Direccion)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TokenPedido)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Activo)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.FechaCreacion)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Pedidos)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(model => item.Nombre)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.Telefono)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.Email)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.Direccion)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.TokenPedido)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.Activo)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.FechaCreacion)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.Pedidos)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.ClienteId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.ClienteId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.ClienteId">Delete</a>
-            </td>
-        </tr>
+
+<div class="card shadow-sm">
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Teléfono</th>
+                        <th>Email</th>
+                        <th>Dirección</th>
+                        <th>Activo</th>
+                        <th>Fecha Creación</th>
+                        <th>Link de Pedidos</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        // Generar el link completo para el cliente
+                        var linkPedido = Url.Action("Cliente", "Pedidos", new { token = item.TokenPedido }, Context.Request.Scheme);
+
+                        <tr class="@(item.Activo == false ? "table-warning" : "")">
+                            <td>
+                                <strong>@item.Nombre</strong>
+                                @if (item.Activo == false)
+                                {
+                                    <span class="badge bg-warning text-dark ms-1">Inactivo</span>
+                                }
+                            </td>
+                            <td>@item.Telefono</td>
+                            <td>@item.Email</td>
+                            <td>@item.Direccion</td>
+                            <td>
+                                @if (item.Activo)
+                                {
+                                    <span class="badge bg-success">✓ Activo</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-secondary">✗ Inactivo</span>
+                                }
+                            </td>
+                            <td>@item.FechaCreacion.ToString("dd/MM/yyyy HH:mm")</td>
+                            <td>
+                                <!-- BOTÓN PARA COPIAR LINK -->
+                                <div class="input-group input-group-sm">
+                                    <input type="text"
+                                           class="form-control link-pedido-input"
+                                           id="link-@item.ClienteId"
+                                           value="@linkPedido"
+                                           readonly
+                                           style="max-width: 250px;" />
+                                    <button class="btn btn-outline-primary btn-copiar"
+                                            type="button"
+                                            data-link="@linkPedido"
+                                            data-cliente="@item.ClienteId"
+                                            title="Copiar link al portapapeles">
+                                        📋 Copiar
+                                    </button>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="btn-group btn-group-sm" role="group">
+                                    <a asp-action="Edit" asp-route-id="@item.ClienteId" class="btn btn-outline-primary" title="Editar">✏️</a>
+                                    <a asp-action="Details" asp-route-id="@item.ClienteId" class="btn btn-outline-info" title="Ver detalles">👁️</a>
+                                    <a asp-action="Delete" asp-route-id="@item.ClienteId" class="btn btn-outline-danger" title="Eliminar">🗑️</a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Función para copiar al portapapeles
+        document.querySelectorAll('.btn-copiar').forEach(boton => {
+            boton.addEventListener('click', async function() {
+                const link = this.getAttribute('data-link');
+                const clienteId = this.getAttribute('data-cliente');
+                const input = document.getElementById(`link-${clienteId}`);
+
+                try {
+                    // Método moderno para copiar
+                    await navigator.clipboard.writeText(link);
+
+                    // Feedback visual
+                    const textoOriginal = this.innerHTML;
+                    this.innerHTML = '✅ ¡Copiado!';
+                    this.classList.remove('btn-outline-primary');
+                    this.classList.add('btn-success');
+
+                    // Seleccionar el texto del input
+                    input.select();
+
+                    // Regresar al estado normal después de 2 segundos
+                    setTimeout(() => {
+                        this.innerHTML = textoOriginal;
+                        this.classList.remove('btn-success');
+                        this.classList.add('btn-outline-primary');
+                    }, 2000);
+
+                } catch (err) {
+                    // Método alternativo para navegadores antiguos
+                    input.select();
+                    document.execCommand('copy');
+
+                    // Feedback visual
+                    const textoOriginal = this.innerHTML;
+                    this.innerHTML = '✅ ¡Copiado!';
+                    this.classList.remove('btn-outline-primary');
+                    this.classList.add('btn-success');
+
+                    setTimeout(() => {
+                        this.innerHTML = textoOriginal;
+                        this.classList.remove('btn-success');
+                        this.classList.add('btn-outline-primary');
+                    }, 2000);
+                }
+            });
+        });
+    </script>
 }
-    </tbody>
-</table>
