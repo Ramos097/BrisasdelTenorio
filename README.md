@@ -34,12 +34,12 @@ A robust and scalable web application designed to streamline online sales, inven
 
 
 
-| Dashboard View |  
-| :---: | :---: |
-| <img width="1909" height="888" alt="Captura de pantalla 2026-11-25 160557" src="https://github.com/user-attachments/assets/41217b8d-9259-4f7f-a31e-c3361da878cf" /> <img width="1615" height="592" alt="Captura de pantalla 2026-11-25 160617" src="https://github.com/user-attachments/assets/db45f528-e53a-4820-afc0-98605037a8c7" />
+ Dashboard View   
+
+<img width="1909" height="888" alt="Captura de pantalla 2026-11-25 160557" src="https://github.com/user-attachments/assets/41217b8d-9259-4f7f-a31e-c3361da878cf" /> <img width="1615" height="592" alt="Captura de pantalla 2026-11-25 160617" src="https://github.com/user-attachments/assets/db45f528-e53a-4820-afc0-98605037a8c7" />
 
 
-  <img width="1916" height="412" alt="Captura de pantalla 2026-11-25 161640" src="https://github.com/user-attachments/assets/cc4050a4-06b0-46d0-9952-c387e2c918a2" />
+<img width="1916" height="412" alt="Captura de pantalla 2026-11-25 161640" src="https://github.com/user-attachments/assets/cc4050a4-06b0-46d0-9952-c387e2c918a2" />
 
  
 
