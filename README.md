@@ -34,9 +34,11 @@ A robust and scalable web application designed to streamline online sales, inven
 
 
 
-| Dashboard View | Product Management |
+| Dashboard View |  Clients View  |
 | :---: | :---: |
-| *[<img width="1909" height="888" alt="Captura de pantalla 2026-11-25 160557" src="https://github.com/user-attachments/assets/41217b8d-9259-4f7f-a31e-c3361da878cf" />
-]* | *[Insert Screenshot Here]* |
+| <img width="1909" height="888" alt="Captura de pantalla 2026-11-25 160557" src="https://github.com/user-attachments/assets/41217b8d-9259-4f7f-a31e-c3361da878cf" /> <img width="1615" height="592" alt="Captura de pantalla 2026-11-25 160617" src="https://github.com/user-attachments/assets/395e5c47-305b-4dde-afb0-1e9621cdd822" />
+
+ | <img width="1358" height="335" alt="Captura de pantalla 2026-11-25 160626" src="https://github.com/user-attachments/assets/1f139c08-fb0d-44e4-ba80-bcb69b08bd32" />
+ |
 
 ---
