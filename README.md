@@ -36,6 +36,7 @@ A robust and scalable web application designed to streamline online sales, inven
 
 | Dashboard View | Product Management |
 | :---: | :---: |
-| *[c:\Users\Marvin\Pictures\Screenshots\Captura de pantalla 2026-11-25 160557.png]* | *[Insert Screenshot Here]* |
+| *[<img width="1909" height="888" alt="Captura de pantalla 2026-11-25 160557" src="https://github.com/user-attachments/assets/41217b8d-9259-4f7f-a31e-c3361da878cf" />
+]* | *[Insert Screenshot Here]* |
 
 ---
