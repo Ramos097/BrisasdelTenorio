@@ -1,4 +1,4 @@
-# 🥬 Brisas del Tenorio - Sales Management System
+#  Brisas del Tenorio - Sales Management System
 
 A robust and scalable web application designed to streamline online sales, inventory control, and business operations for a hydroponic lettuce enterprise. Built with a focus on clean code, maintainability, and efficient database design.
 
@@ -8,7 +8,7 @@ A robust and scalable web application designed to streamline online sales, inven
 
 ---
 
-## 🚀 Features
+##  Features
 
 - **Product & Inventory Management**: Real-time tracking of hydroponic lettuce stock, categories, and pricing.
 - **Order Processing**: End-to-end sales registration, from cart to order confirmation.
@@ -18,7 +18,7 @@ A robust and scalable web application designed to streamline online sales, inven
 
 ---
 
-## 🛠️ Tech Stack
+##  Tech Stack
 
 | Category       | Technologies |
 |----------------|--------------|
@@ -30,7 +30,7 @@ A robust and scalable web application designed to streamline online sales, inven
 
 ---
 
-## 📸 Screenshots
+##  Screenshots
 
 
 
